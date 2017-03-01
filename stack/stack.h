@@ -18,6 +18,9 @@ class Stack
         void push(const T& elem);
         void pop();
 
+        bool ok();
+        std::string dump();
+
     private:
         static const size_t DEFAULT_DATA_SIZE = 10;
 
@@ -86,4 +89,39 @@ void Stack<T>::pop()
     assert(_top);
 
     _data[--_top].~T();
+}
+
+template <typename T>
+bool Stack<T>::ok()
+{
+    return _data && (_top < _dataSize);
+}
+
+template <typename T>
+std::string Stack<T>::dump()
+{
+    std::string res;
+
+    const bool isOk = ok();
+    if( isOk )
+        res += "Object is good\n";
+    else
+        res += "Object is bad\n";
+
+    res += "data pointer: " + std::to_string(_data) + "\n";
+    res += "top element number: " + std::to_string(_top) + "\n";
+    res += "max elements: " + std::to_string(_dataSize) + "\n";
+    if( isOk )
+    {
+        res += "elements: [";
+
+        for( int i = 0; i < _top; ++i )
+        {
+            res += std::to_string(_data[i]);
+            if( i < _top - 1 )
+                res += ", ";
+        }
+
+        res += "]\n";
+    }
 }
